@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20201108181506_InitMigration.cs" />
+    <Compile Remove="Migrations\20201108181506_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20201108182709_InitMigration.cs" />
+    <Compile Remove="Migrations\20201108182709_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20201108182924_InitMigration.cs" />
+    <Compile Remove="Migrations\20201108182924_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20201108183242_RenameTitleColumn.cs" />
+    <Compile Remove="Migrations\20201108183242_RenameTitleColumn.Designer.cs" />
+    <Compile Remove="Migrations\20201108184722_InitMigration.cs" />
+    <Compile Remove="Migrations\20201108184722_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20201109170633_InitCreate.cs" />
+    <Compile Remove="Migrations\20201109170633_InitCreate.Designer.cs" />
+    <Compile Remove="Migrations\20201109170823_InitCreate.cs" />
+    <Compile Remove="Migrations\20201109170823_InitCreate.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+  </ItemGroup>
+
+
+</Project>
