@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using WebAPI_Service.DTO;
 using WebAPI_Service.Models;
+using WebAPI_Service.Validators;
 
 namespace WebAPI_Service.Controllers
 {
@@ -19,32 +22,41 @@ namespace WebAPI_Service.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> Get()
+        public async Task<ActionResult<IEnumerable<GetProductDto>>> Get()
         {
-            return await dbContext.Products.ToListAsync();
+            return await dbContext.Products.ProjectToType<GetProductDto>().ToListAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> Get([Required] int id)
+        public async Task<ActionResult<GetProductDto>> Get([Required] int id)
         {
-            Product product = await dbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
-            return product == null
-                ? (ActionResult)NotFound()
-                : Ok(product);
+            var product = await dbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (product == null)
+                return NotFound();
+
+            var getProductById = product.Adapt<GetProductDto>();
+
+            return  Ok(getProductById);
         }
 
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<Product>>> Post([FromBody] Product product)
+        public async Task<ActionResult<IEnumerable<GetProductDto>>> Post([FromBody] CreateProductDto productDto)
         {
-            if (product == null)
+            var validator = new ProductValidator();
+            var validatorRes = validator.Validate(productDto);
+
+            if (!validatorRes.IsValid)
             {
                 return BadRequest();
             }
 
+            var product = productDto.Adapt<Product>();
             dbContext.Products.Add(product);
             await dbContext.SaveChangesAsync();
 
-            return Ok(product);
+            var result = product.Adapt<GetProductDto>();
+            return Ok(result);
         }
     }
 }

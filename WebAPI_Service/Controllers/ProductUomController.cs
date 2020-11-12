@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
+using WebAPI_Service.DTO;
 using WebAPI_Service.Models;
+using WebAPI_Service.Validators;
 
 namespace WebAPI_Service.Controllers
 {
@@ -12,7 +14,7 @@ namespace WebAPI_Service.Controllers
     [ApiController]
     public class ProductUomController : ControllerBase
     {
-        ApplicationContext dbContext;
+        private ApplicationContext dbContext;
 
         public ProductUomController(ApplicationContext context)
         {
@@ -20,32 +22,44 @@ namespace WebAPI_Service.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductUom>>> Get()
+        public async Task<ActionResult<IEnumerable<GetProductUomDto>>> Get()
         {
-            return await dbContext.ProductUoms.ToListAsync();
+            return await dbContext.ProductUoms.ProjectToType<GetProductUomDto>().ToListAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductUom>> Get([Required] int id)
+        public async Task<ActionResult<GetProductUomDto>> Get([Required] int id)
         {
-            ProductUom uom = await dbContext.ProductUoms.FirstOrDefaultAsync(x => x.Id == id);
-            return uom == null
-                ? (ActionResult)NotFound()
-                : Ok(uom);
+            var uom = await dbContext.ProductUoms.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (uom == null)
+            {
+                return NotFound();
+            }
+
+            var getProductUomDto = uom.Adapt<GetProductUomDto>();
+
+            return Ok(getProductUomDto);
         }
 
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<ProductUom>>> Post([FromBody] ProductUom uom)
+        public async Task<ActionResult<GetProductUomDto>> Post([FromBody] CreateUomDto uom)
         {
-            if (uom == null)
+            var validator = new UomValidator();
+            var validatorRes = validator.Validate(uom);
+
+            if (!validatorRes.IsValid)
             {
                 return BadRequest();
             }
 
-            dbContext.ProductUoms.Add(uom);
+            var productUom = uom.Adapt<ProductUom>();
+
+            dbContext.ProductUoms.Add(productUom);
             await dbContext.SaveChangesAsync();
- 
-            return Ok(uom);
+
+            var result = productUom.Adapt<GetProductUomDto>();
+            return Ok(result);
         }
     }
 }

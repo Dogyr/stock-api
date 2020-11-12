@@ -20,6 +20,7 @@ namespace WebAPI_Service
         public void ConfigureServices(IServiceCollection services)
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
+
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
             services.AddControllers();
             services.AddSwaggerGen();
