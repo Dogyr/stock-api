@@ -8,7 +8,7 @@ namespace WebAPI_Service.Models
 
         public string Name { get; set; } 
 
-        public int? UomId { get; set; }
+        public int UomId { get; set; }
 
         public ProductUom Uom  { get; set; }
 

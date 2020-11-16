@@ -1,11 +1,12 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using WebAPI_Service.DTO;
 using WebAPI_Service.Models;
+using WebAPI_Service.Repository;
 using WebAPI_Service.Validators;
 
 namespace WebAPI_Service.Controllers
@@ -14,52 +15,71 @@ namespace WebAPI_Service.Controllers
     [ApiController]
     public class ProductUomController : ControllerBase
     {
-        private ApplicationContext dbContext;
+        private IUomRepository repository;
 
-        public ProductUomController(ApplicationContext context)
+        public ProductUomController(IUomRepository repository)
         {
-            dbContext = context;
+            this.repository = repository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetProductUomDto>>> Get()
+        public async Task<ActionResult<IEnumerable<ProductUomDto>>> Get()
         {
-            return await dbContext.ProductUoms.ProjectToType<GetProductUomDto>().ToListAsync();
+            var listUom = await repository.GetUomAsync();
+            var result = listUom.Select(x => x.Adapt<ProductUomDto>());
+            return Ok(result);
+
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetProductUomDto>> Get([Required] int id)
+        public async Task<ActionResult<ProductUomDto>> Get([Required] int id)
         {
-            var uom = await dbContext.ProductUoms.FirstOrDefaultAsync(x => x.Id == id);
-
+            var uom = await repository.GetUomAsync(id);
             if (uom == null)
             {
                 return NotFound();
             }
 
-            var getProductUomDto = uom.Adapt<GetProductUomDto>();
-
+            var getProductUomDto = uom.Adapt<ProductUomDto>();
             return Ok(getProductUomDto);
         }
 
         [HttpPost]
-        public async Task<ActionResult<GetProductUomDto>> Post([FromBody] CreateUomDto uom)
+        public async Task<ActionResult<ProductUomDto>> Post(CreateUomDto uomDto)
         {
-            var validator = new UomValidator();
-            var validatorRes = validator.Validate(uom);
-
+            var validator = new CreateUomValidator();
+            var validatorRes = validator.Validate(uomDto);
             if (!validatorRes.IsValid)
             {
                 return BadRequest();
             }
 
-            var productUom = uom.Adapt<ProductUom>();
+            var productUom = uomDto.Adapt<ProductUom>();
+            var result = await repository.AddUomAsync(productUom);
+            return Ok(result.Adapt<ProductUomDto>());
+        }
 
-            dbContext.ProductUoms.Add(productUom);
-            await dbContext.SaveChangesAsync();
+        [HttpPut]
+        public async Task<ActionResult<bool>> Put(ProductUomDto uomDto)
+        {
+            var validator = new UomValidator();
+            var validatorRes = validator.Validate(uomDto);
+            if (!validatorRes.IsValid)
+            {
+                return BadRequest();
+            }
 
-            var result = productUom.Adapt<GetProductUomDto>();
+            var productUom = uomDto.Adapt<ProductUom>();
+            var result = await repository.UpdateUomAsync(productUom);
             return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> Delete([Required] int id)
+        {
+            return await repository.DeleteUomAsync(id)
+                ? Ok()
+                : (ActionResult)NotFound();
         }
     }
 }

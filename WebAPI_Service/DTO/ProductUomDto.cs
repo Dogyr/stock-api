@@ -1,6 +1,6 @@
 ﻿namespace WebAPI_Service.DTO
 {
-    public class GetProductUomDto
+    public class ProductUomDto
     {
         public int Id { get; set; }
 

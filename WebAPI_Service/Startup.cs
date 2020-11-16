@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebAPI_Service.Models;
+using WebAPI_Service.Repository;
+using Serilog;
 
 namespace WebAPI_Service
 {
@@ -21,9 +23,19 @@ namespace WebAPI_Service
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
 
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .WriteTo.File(@"Logs\log.txt",
+                    rollingInterval: RollingInterval.Day,
+                    rollOnFileSizeLimit: true)
+                .CreateLogger();
+
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
+            services.AddTransient<IUomRepository, UomRepository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
             services.AddControllers();
             services.AddSwaggerGen();
+            services.AddSingleton(Log.Logger);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

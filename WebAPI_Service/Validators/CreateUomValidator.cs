@@ -3,9 +3,9 @@ using WebAPI_Service.DTO;
 
 namespace WebAPI_Service.Validators
 {
-    public class UomValidator : AbstractValidator<ProductUomDto>
+    public class CreateUomValidator : AbstractValidator<CreateUomDto>
     {
-        public UomValidator()
+        public CreateUomValidator()
         {
             RuleFor(x => x.Title)
                 .NotEmpty()

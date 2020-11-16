@@ -1,14 +1,12 @@
-﻿using FluentValidation;
-using Mapster;
+﻿using Mapster;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 using WebAPI_Service.DTO;
 using WebAPI_Service.Models;
+using WebAPI_Service.Repository;
 using WebAPI_Service.Validators;
 
 namespace WebAPI_Service.Controllers
@@ -17,25 +15,17 @@ namespace WebAPI_Service.Controllers
     [ApiController]
     public class ProductMovementsController : ControllerBase
     {
-        private ApplicationContext dbContext;
+        private IProductRepository repository;
 
-        public ProductMovementsController(ApplicationContext context)
+        public ProductMovementsController(IProductRepository repository)
         {
-            dbContext = context;
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetProductMovementsDto>>> Get()
-        {
-            return await dbContext.ProductMovementss.ProjectToType<GetProductMovementsDto>().ToListAsync();
+            this.repository = repository;
         }
 
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<GetProductMovementsDto>>> Post([FromBody] CreateProductMovementsDto createProductMovementsDto)
+        public async Task<ActionResult<IEnumerable<ProductMovementsDto>>> Post(CreateProductMovementsDto createProductMovementsDto)
         {
-            var sumQuantity = await dbContext.ProductMovementss.Where(x => x.ProductId == createProductMovementsDto.ProductId).SumAsync(x => x.Quantity);
-
-            var validator = new ProductMovementsValidator(dbContext);
+            var validator = new CreateProductMovementsValidator(repository);
             var validatorRes = validator.Validate(createProductMovementsDto);
 
             if (!validatorRes.IsValid)
@@ -46,18 +36,24 @@ namespace WebAPI_Service.Controllers
             var productMovements = createProductMovementsDto.Adapt<ProductMovements>();
             productMovements.InsertDateTime = DateTime.Now;
 
-            dbContext.ProductMovementss.Add(productMovements);
-            await dbContext.SaveChangesAsync();
-
-            var result = productMovements.Adapt<GetProductMovementsDto>();
-            return Ok(createProductMovementsDto);
+            var result = await repository.AddMovementsAsync(productMovements);
+            return Ok(result.Adapt<ProductMovementsDto>());
         }
 
         [HttpGet("{productId}/fromdate/{fromDate}")]
-        public async Task<ActionResult<GetProductMovementsDto>> Get([Required] int productId, [Required] DateTime fromDate)
+        public async Task<ActionResult<ProductMovementsDto>> Get([Required] int productId, [Required] DateTime fromDate)
         {
-            int? sum = await dbContext.ProductMovementss.Where(x => x.InsertDateTime <= fromDate && x.ProductId == productId).SumAsync(x => x.Quantity);
-            return sum == null
+            var sum = await repository.GetTotalQuontityAsync(productId, fromDate);
+            return sum == 0
+                ? (ActionResult)NotFound()
+                : Ok(sum);
+        }
+
+        [HttpGet("{productId}")]
+        public async Task<ActionResult<ProductMovementsDto>> Get([Required] int productId)
+        {
+            var sum = await repository.GetTotalQuontityAsync(productId);
+            return sum == 0
                 ? (ActionResult)NotFound()
                 : Ok(sum);
         }

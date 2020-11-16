@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAPI_Service.Models;
 
 namespace WebAPI_Service.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20201115162929_CreateCascadeDelete")]
+    partial class CreateCascadeDelete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,7 +31,7 @@ namespace WebAPI_Service.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UomId")
+                    b.Property<int?>("UomId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -49,7 +51,7 @@ namespace WebAPI_Service.Migrations
                     b.Property<DateTime>("InsertDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -82,8 +84,7 @@ namespace WebAPI_Service.Migrations
                     b.HasOne("WebAPI_Service.Models.ProductUom", "Uom")
                         .WithMany("Products")
                         .HasForeignKey("UomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("WebAPI_Service.Models.ProductMovements", b =>
@@ -91,8 +92,7 @@ namespace WebAPI_Service.Migrations
                     b.HasOne("WebAPI_Service.Models.Product", "Product")
                         .WithMany("ProductMovements")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

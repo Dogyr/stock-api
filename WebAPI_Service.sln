@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI_Service", "WebAPI_Service\WebAPI_Service.csproj", "{B61BA3CC-2FEA-4CD7-8368-D5BE606FCED3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI_Service", "WebAPI_Service\WebAPI_Service.csproj", "{B61BA3CC-2FEA-4CD7-8368-D5BE606FCED3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2CE0E467-E7D9-4FD1-ADA7-56F55FCE27E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI_Service.Tests", "WebAPI_Service.Tests\WebAPI_Service.Tests.csproj", "{D61BADA8-4A88-4C08-9433-E3205867C854}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataLayer", "DataLayer", "{7AD04D4F-2CB8-442F-B8E1-DE45FB179017}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI_Service.DataLayer", "WebAPI_Service.DataLayer\WebAPI_Service.DataLayer.csproj", "{4E33111B-8505-4AED-B04A-2E8289B461AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +23,21 @@ Global
 		{B61BA3CC-2FEA-4CD7-8368-D5BE606FCED3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B61BA3CC-2FEA-4CD7-8368-D5BE606FCED3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B61BA3CC-2FEA-4CD7-8368-D5BE606FCED3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D61BADA8-4A88-4C08-9433-E3205867C854}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D61BADA8-4A88-4C08-9433-E3205867C854}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D61BADA8-4A88-4C08-9433-E3205867C854}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D61BADA8-4A88-4C08-9433-E3205867C854}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E33111B-8505-4AED-B04A-2E8289B461AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E33111B-8505-4AED-B04A-2E8289B461AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E33111B-8505-4AED-B04A-2E8289B461AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E33111B-8505-4AED-B04A-2E8289B461AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D61BADA8-4A88-4C08-9433-E3205867C854} = {2CE0E467-E7D9-4FD1-ADA7-56F55FCE27E1}
+		{4E33111B-8505-4AED-B04A-2E8289B461AE} = {7AD04D4F-2CB8-442F-B8E1-DE45FB179017}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {189BE8C2-8F28-42A5-BC95-A549894C6978}
