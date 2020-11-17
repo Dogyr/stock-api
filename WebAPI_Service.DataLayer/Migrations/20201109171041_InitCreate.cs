@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace WebAPI_Service.Migrations
+namespace WebAPI_Service.DataLayer.Migrations
 {
     public partial class InitCreate : Migration
     {

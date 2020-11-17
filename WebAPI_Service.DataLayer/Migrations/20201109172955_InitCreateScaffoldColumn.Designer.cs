@@ -5,13 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WebAPI_Service.Models;
 
-namespace WebAPI_Service.Migrations
+namespace WebAPI_Service.DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20201115162929_CreateCascadeDelete")]
-    partial class CreateCascadeDelete
+    [Migration("20201109172955_InitCreateScaffoldColumn")]
+    partial class InitCreateScaffoldColumn
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -83,16 +82,14 @@ namespace WebAPI_Service.Migrations
                 {
                     b.HasOne("WebAPI_Service.Models.ProductUom", "Uom")
                         .WithMany("Products")
-                        .HasForeignKey("UomId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UomId");
                 });
 
             modelBuilder.Entity("WebAPI_Service.Models.ProductMovements", b =>
                 {
                     b.HasOne("WebAPI_Service.Models.Product", "Product")
                         .WithMany("ProductMovements")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ProductId");
                 });
 #pragma warning restore 612, 618
         }

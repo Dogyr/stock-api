@@ -5,13 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WebAPI_Service.Models;
 
-namespace WebAPI_Service.Migrations
+namespace WebAPI_Service.DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20201109172955_InitCreateScaffoldColumn")]
-    partial class InitCreateScaffoldColumn
+    [Migration("20201109171041_InitCreate")]
+    partial class InitCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,15 +50,10 @@ namespace WebAPI_Service.Migrations
                     b.Property<DateTime>("InsertDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductMovementss");
                 });
@@ -84,13 +78,6 @@ namespace WebAPI_Service.Migrations
                     b.HasOne("WebAPI_Service.Models.ProductUom", "Uom")
                         .WithMany("Products")
                         .HasForeignKey("UomId");
-                });
-
-            modelBuilder.Entity("WebAPI_Service.Models.ProductMovements", b =>
-                {
-                    b.HasOne("WebAPI_Service.Models.Product", "Product")
-                        .WithMany("ProductMovements")
-                        .HasForeignKey("ProductId");
                 });
 #pragma warning restore 612, 618
         }

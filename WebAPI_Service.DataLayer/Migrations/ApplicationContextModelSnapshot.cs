@@ -3,30 +3,28 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WebAPI_Service.Models;
+using WebAPI_Service.DataLayer;
 
-namespace WebAPI_Service.Migrations
+namespace WebAPI_Service.DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20201116200001_DeleteNullableId")]
-    partial class DeleteNullableId
+    partial class ApplicationContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.9")
+                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "3.1.9");
 
             modelBuilder.Entity("WebAPI_Service.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -46,7 +44,7 @@ namespace WebAPI_Service.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<DateTime>("InsertDateTime")
                         .HasColumnType("datetime2");
@@ -69,7 +67,7 @@ namespace WebAPI_Service.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -86,6 +84,8 @@ namespace WebAPI_Service.Migrations
                         .HasForeignKey("UomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Uom");
                 });
 
             modelBuilder.Entity("WebAPI_Service.Models.ProductMovements", b =>
@@ -95,6 +95,18 @@ namespace WebAPI_Service.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("WebAPI_Service.Models.Product", b =>
+                {
+                    b.Navigation("ProductMovements");
+                });
+
+            modelBuilder.Entity("WebAPI_Service.Models.ProductUom", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

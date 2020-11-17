@@ -4,8 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WebAPI_Service.Models;
-using WebAPI_Service.Repository;
+using WebAPI_Service.DataLayer;
+using WebAPI_Service.DataLayer.Repositories;
+using WebAPI_Service.Core.Interfaces;
 using Serilog;
 
 namespace WebAPI_Service

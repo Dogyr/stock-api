@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebAPI_Service.Models;
+using WebAPI_Service.Core.DataModels;
 
-namespace WebAPI_Service.Repository
+namespace WebAPI_Service.Core.Interfaces
 {
     public interface IUomRepository 
     {

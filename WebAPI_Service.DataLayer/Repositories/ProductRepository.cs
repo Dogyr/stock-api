@@ -3,9 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebAPI_Service.Models;
+using WebAPI_Service.Core.DataModels;
+using WebAPI_Service.Core.Interfaces;
 
-namespace WebAPI_Service.Repository
+namespace WebAPI_Service.DataLayer.Repositories
 {
     public class ProductRepository : IProductRepository
     {

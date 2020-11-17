@@ -5,9 +5,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WebAPI_Service.Models;
 
-namespace WebAPI_Service.Migrations
+namespace WebAPI_Service.DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
     [Migration("20201109171606_InitCreateFKinPrdctMvmnts")]

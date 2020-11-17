@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using System.Threading.Tasks;
 using WebAPI_Service.DTO;
-using WebAPI_Service.Repository;
+using WebAPI_Service.Core.Interfaces;
 
 namespace WebAPI_Service.Validators
 {

@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using WebAPI_Service.DTO;
-using WebAPI_Service.Models;
-using WebAPI_Service.Repository;
+using WebAPI_Service.Core.Interfaces;
+using WebAPI_Service.Core.DataModels;
 using WebAPI_Service.Validators;
 
 namespace WebAPI_Service.Controllers

@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WebAPI_Service.Core.DataModels;
 
-namespace WebAPI_Service.Models
+namespace WebAPI_Service.DataLayer
 {
     public class ApplicationContext : DbContext
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductUom> ProductUoms { get; set; }
         public DbSet<ProductMovements> ProductMovementss { get; set; }
-        
+
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options) { }
 
