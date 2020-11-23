@@ -1,13 +1,12 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using WebAPI_Service.DTO;
 using WebAPI_Service.Core.DataModels;
 using WebAPI_Service.Core.Interfaces;
+using WebAPI_Service.DTO;
 using WebAPI_Service.Validators;
 
 namespace WebAPI_Service.Controllers
@@ -17,12 +16,10 @@ namespace WebAPI_Service.Controllers
     public class ProductController : ControllerBase
     {
         private IProductRepository repository;
-        private ILogger log;
 
-        public ProductController(IProductRepository productRepository, ILogger<ProductController> logger)
+        public ProductController(IProductRepository productRepository)
         {
             repository = productRepository;
-            log = logger;
         }
 
         [HttpGet]
@@ -30,7 +27,6 @@ namespace WebAPI_Service.Controllers
         {
             var listProduct = await repository.GetProductAsync();
             var result = listProduct.Select(x => x.Adapt<ProductDto>());
-            log.LogInformation("Вывод таблицы продуктов");
             return Ok(result);
         }
 
@@ -43,9 +39,6 @@ namespace WebAPI_Service.Controllers
                 return NotFound();
 
             var getProductById = product.Adapt<ProductDto>();
-
-            log.LogInformation("Вывод продукта id = {0}, Name = {1}", getProductById.Id, getProductById.Name);
-
             return  Ok(getProductById);
         }
 
@@ -61,7 +54,7 @@ namespace WebAPI_Service.Controllers
 
             var product = productDto.Adapt<Product>();
             var result = await repository.AddProductAsync(product);
-            return Ok(result);
+            return Ok(product.Adapt<ProductDto>());
         }
 
         [HttpPut]

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using WebAPI_Service.DTO;
 using WebAPI_Service.Core.DataModels;
 using WebAPI_Service.Core.Interfaces;
+using WebAPI_Service.DTO;
 using WebAPI_Service.Validators;
 
 namespace WebAPI_Service.Controllers
@@ -28,7 +28,6 @@ namespace WebAPI_Service.Controllers
             var listUom = await repository.GetUomAsync();
             var result = listUom.Select(x => x.Adapt<ProductUomDto>());
             return Ok(result);
-
         }
 
         [HttpGet("{id}")]
@@ -75,9 +74,10 @@ namespace WebAPI_Service.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> Delete([Required] int id)
+        public async Task<ActionResult> Delete([Required] int id)
         {
-            return await repository.DeleteUomAsync(id)
+            var result = await repository.DeleteUomAsync(id);
+            return result
                 ? Ok()
                 : (ActionResult)NotFound();
         }
